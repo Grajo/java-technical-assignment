@@ -8,6 +8,12 @@ public class Product implements ProductInterface {
 
     public Product(final BigDecimal pricePerUnit) {
         this.pricePerUnit = pricePerUnit;
+        super.pricingStrategy = new NoApplicableDiscount();
+    }
+
+    public Product(final BigDecimal pricePerUnit, final PricingStrategy pricingStrategy) {
+        this.pricePerUnit = pricePerUnit;
+        super.pricingStrategy = pricingStrategy;
     }
 
     BigDecimal pricePerUnit() {
