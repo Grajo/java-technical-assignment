@@ -23,4 +23,8 @@ public class Product implements ProductInterface {
     public Item oneOf() {
         return new ItemByUnit(this);
     }
+
+    public Item multipleOf(int numOfItems) {
+        return new ItemByUnit(this, numOfItems);
+    }
 }
