@@ -40,10 +40,10 @@ public class Basket {
         }
 
         private BigDecimal discounts() {
-            return return items.stream().map(Item::applyDiscount)
-                .reduce(BigDecimal::add)
-                .orElse(BigDecimal.ZERO)
-                .setScale(2, RoundingMode.HALF_UP);;
+            return items.stream().map(Item::applyDiscount)
+            .reduce(BigDecimal::add)
+            .orElse(BigDecimal.ZERO)
+            .setScale(2, RoundingMode.HALF_UP);
         }
 
         private BigDecimal calculate() {

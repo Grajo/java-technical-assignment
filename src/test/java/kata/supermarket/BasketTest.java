@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.Stream;
+import kata.supermarket.pricing.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -29,7 +30,12 @@ class BasketTest {
                 aSingleItemPricedPerUnit(),
                 multipleItemsPricedPerUnit(),
                 aSingleItemPricedByWeight(),
-                multipleItemsPricedByWeight()
+                multipleItemsPricedByWeight(),
+                twoForOneDiscount(),
+                multipleItemsWithSomeTwoForOneDiscount(),
+                threeForTwoDiscount(),
+                multipleItemsWithSomeThreeForTwoDiscount(),
+                multipleItemWithDifferentApplicableDiscounts()
         );
     }
 
@@ -78,5 +84,44 @@ class BasketTest {
 
     private static Item twoHundredGramsOfPickAndMix() {
         return aKiloOfPickAndMix().weighing(new BigDecimal(".2"));
+    }
+
+
+    /**Added new methods to test the discount functionality */
+
+    private static Item multiplePackOfTomatoes(PricingStrategy discount, int numOfPacks) {
+        return new Product(new BigDecimal(".55"), discount).multipleOf(numOfPacks);
+    }
+    
+    //2x1 test
+    private static Arguments twoForOneDiscount() {
+        return Arguments.of("2x1 Discount ", "1.10",
+                Arrays.asList( multiplePackOfTomatoes(new TwoForOneDiscount(), 3) ));
+    }
+
+    private static Arguments multipleItemsWithSomeTwoForOneDiscount() {
+        return Arguments.of("2x1 Discount ", "3.14",
+                Arrays.asList(multiplePackOfTomatoes(new TwoForOneDiscount(), 3), aPackOfDigestives(), aPintOfMilk() ));
+    }
+
+    //3x2 test
+    private static Arguments threeForTwoDiscount() {
+        return Arguments.of("3x2 Discount ", "1.10",
+                Arrays.asList( multiplePackOfTomatoes(new ThreeForTwoDiscount(), 3) ));
+    }
+
+    private static Arguments multipleItemsWithSomeThreeForTwoDiscount() {
+        return Arguments.of("3x2 Discount ", "3.14",
+                Arrays.asList( multiplePackOfTomatoes(new ThreeForTwoDiscount(), 3), aPackOfDigestives(), aPintOfMilk() ));
+    }
+
+    private static Item multiplePackOfBeans(PricingStrategy discount, int numOfPacks) {
+        return new Product(new BigDecimal(".25"), discount).multipleOf(numOfPacks);
+    }
+
+    //basket that has items with multiple discounts 
+    private static Arguments multipleItemWithDifferentApplicableDiscounts() {
+        return Arguments.of("3x2 Discount on tomatoes, 2x1 Discount on beans", "1.35",
+                Arrays.asList( multiplePackOfTomatoes(new ThreeForTwoDiscount(), 3), multiplePackOfBeans(new TwoForOneDiscount(), 2) ));
     }
 }

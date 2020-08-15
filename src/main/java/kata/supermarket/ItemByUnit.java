@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 public class ItemByUnit implements Item {
 
     private final Product product;
-    private final int numOfItems = 1; // 1 by default
+    private int numOfItems = 1; // 1 by default
 
     ItemByUnit(final Product product) {
         this.product = product;
@@ -17,10 +17,14 @@ public class ItemByUnit implements Item {
     }
 
     public BigDecimal price() {
-        return product.pricePerUnit();
+        return product.pricePerUnit().multiply(BigDecimal.valueOf(getNumOfItems()));
     }
 
     public BigDecimal applyDiscount() {
-        return product.getPricingStrategy().getTotalDiscount(product.pricePerUnit(), this.numOfItems);
+        return product.getPricingStrategy().getTotalDiscount(product.pricePerUnit(), getNumOfItems());
+    }
+
+    public int getNumOfItems() {
+        return this.numOfItems;
     }
 }
