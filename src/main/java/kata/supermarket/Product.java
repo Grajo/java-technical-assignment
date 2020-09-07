@@ -6,18 +6,18 @@ import kata.supermarket.pricing.PricingStrategy;
 import kata.supermarket.pricing.NoApplicableDiscount;
 
 
-public class Product {
+public class Product extends NewAbstractProduct {
 
     private final BigDecimal pricePerUnit;
-    private PricingStrategy pricingStrategy;
 
     public Product(final BigDecimal pricePerUnit) {
-        this.pricingStrategy = new NoApplicableDiscount();
+        super.setPricingStrategy(new NoApplicableDiscount());
+        // this.pricingStrategy = new NoApplicableDiscount();
         this.pricePerUnit = pricePerUnit;
     }
 
     public Product(final BigDecimal pricePerUnit, PricingStrategy pricingStrategy) {
-        this.pricingStrategy = pricingStrategy;
+        super.setPricingStrategy(pricingStrategy);
         this.pricePerUnit = pricePerUnit;
     }
 
@@ -33,7 +33,4 @@ public class Product {
         return new ItemByUnit(this, numOfItems);
     }
 
-    public PricingStrategy getPricingStrategy() {
-        return this.pricingStrategy;
-    }
 }

@@ -35,7 +35,8 @@ class BasketTest {
                 multipleItemsWithSomeTwoForOneDiscount(),
                 threeForTwoDiscount(),
                 multipleItemsWithSomeThreeForTwoDiscount(),
-                multipleItemWithDifferentApplicableDiscounts()
+                multipleItemWithDifferentApplicableDiscounts(),
+                halfPriceWeightDiscount()
         );
     }
 
@@ -123,5 +124,19 @@ class BasketTest {
     private static Arguments multipleItemWithDifferentApplicableDiscounts() {
         return Arguments.of("3x2 Discount on tomatoes, 2x1 Discount on beans", "1.35",
                 Arrays.asList( multiplePackOfTomatoes(new ThreeForTwoDiscount(), 3), multiplePackOfBeans(new TwoForOneDiscount(), 2) ));
+    }
+
+    private static WeighedProduct aKiloOfCarrots(PricingStrategy discount) {
+        return new WeighedProduct(new BigDecimal("1.00"), discount);
+    }
+
+    private static Item aKOfCarrots(PricingStrategy discount) {
+        return aKiloOfCarrots(discount).weighing(new BigDecimal("1"));
+    }
+
+    private static Arguments halfPriceWeightDiscount() {
+        return Arguments.of("half price discount when buying 1 kilo","0.50",
+                Arrays.asList(aKOfCarrots(new HalfPriceForWeightProductDiscount())));
+
     }
 }

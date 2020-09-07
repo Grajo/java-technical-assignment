@@ -8,6 +8,7 @@ public class NoApplicableDiscount implements PricingStrategy {
     public NoApplicableDiscount() {}
 
     public BigDecimal getTotalDiscount(BigDecimal price, int numOfItems) {
+        System.out.println("NAD accessed");
         return BigDecimal.ZERO;
     }
 }

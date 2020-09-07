@@ -1,6 +1,7 @@
 package kata.supermarket;
 
 import java.math.BigDecimal;
+import kata.supermarket.pricing.HalfPriceForWeightProductDiscount;
 
 public class ItemByWeight implements Item {
 
@@ -17,6 +18,15 @@ public class ItemByWeight implements Item {
     }
 
     public BigDecimal applyDiscount() {
-        return BigDecimal.ZERO; //TODO: To be modified when Weight Discount Type gets added
+        System.out.println("discount functionality, Ps:"+product.getPricingStrategy()+", FractionalPart: " + this.weightInKilos.remainder(BigDecimal.ONE));
+        
+        if (product.getPricingStrategy() instanceOf HalfPriceForWeightProductDiscount.class){
+            if (this.weightInKilos.remainder(BigDecimal.ONE).toString() != "0") {
+                return product.getPricingStrategy().getTotalDefaultDiscountForWeightedProducts(product.pricePerKilo(), this.weightInKilos );
+            }
+            
+            return product.getPricingStrategy().getTotalDiscount(product.pricePerKilo(), this.weightInKilos.intValue() );
+        }
+        
     }
 }
